@@ -1,0 +1,47 @@
+<%- include('includes/head'); %>
+<%- include('includes/navbar'); %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 my-3">
+      <h1 class="display-1 text-center">Sign up</h1>
+      <p class="text-center lead">Welcome! Let's set you up!</p>
+      <main class="container">
+        <div class="box text-center" id="divLogin">
+          <form action="signup" method="POST">
+            <input type="hidden" name="_csrf" value=<%= csrfToken %>>
+            <div class="form-group">
+              <label>Name
+                <input type="name" class="form-control" name="name" autocomplete="off" />
+              </label>
+            </div>
+            <div class="form-group">
+              <label>E-mail
+                <input type="email" class="form-control" name="email" autocomplete="off" />
+              </label>
+            </div>
+            <div class="form-group">
+              <label>Password
+                <input type="password" class="form-control" name="password" autocomplete="off" />
+              </label>
+            </div>
+            <div class="form-group">
+              <label>Confirm Password
+                <input type="password" class="form-control" name="confirmPassword" autocomplete="off" />
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary my-3">Register</button>
+          </form>
+        </div>
+        <div class="box" id="divSignup">
+
+        </div>
+      </main>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>
+
+<script src=""></script>
+<%- include('includes/footer'); %>

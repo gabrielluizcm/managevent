@@ -1,6 +1,6 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
-import './assets/css/style.css';
+import './assets/css/global.css';
 
-console.log('Hello world!');
+
