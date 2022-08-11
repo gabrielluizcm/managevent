@@ -1,4 +1,7 @@
 exports.middlewareGlobal = (req, res, next) => {
+  res.locals.csrfToken = req.csrfToken();
+  res.locals.errors = req.flash('errors');
+  res.locals.successes = req.flash('successes');
   next();
 };
 
@@ -10,9 +13,4 @@ exports.checkCsrfError = (err, req, res, next) => {
   if (err) {
     return res.render('404');
   }
-};
-
-exports.csrfMiddleware = (req, res, next) => {
-  res.locals.csrfToken = req.csrfToken();
-  next();
 };

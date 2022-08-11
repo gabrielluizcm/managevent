@@ -1,5 +1,6 @@
 <%- include('includes/head'); %>
 <%- include('includes/navbar'); %>
+<link rel="stylesheet" href="/assets/css/login/login.min.css">
 
 <div class="container">
   <div class="row">
@@ -21,7 +22,11 @@
                 <input type="password" class="form-control" name="password" />
               </label>
             </div>
+            <div class="loginRedirect">
+              <a href="/signup/">New here? Register instead</a>
+            </div>
             <button type="submit" class="btn btn-primary my-3">Login</button>
+            <%- include('includes/messages'); %>
           </form>
         </div>
         <div class="box" id="divSignup">

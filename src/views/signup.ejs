@@ -1,5 +1,6 @@
 <%- include('includes/head'); %>
 <%- include('includes/navbar'); %>
+<link rel="stylesheet" href="/assets/css/login/login.min.css">
 
 <div class="container">
   <div class="row">
@@ -9,7 +10,7 @@
       <p class="text-center lead">Welcome! Let's set you up!</p>
       <main class="container">
         <div class="box text-center" id="divLogin">
-          <form action="signup" method="POST">
+          <form action="/signup/" method="POST">
             <input type="hidden" name="_csrf" value=<%= csrfToken %>>
             <div class="form-group">
               <label>Name
@@ -31,7 +32,11 @@
                 <input type="password" class="form-control" name="confirmPassword" autocomplete="off" />
               </label>
             </div>
+            <div class="loginRedirect">
+              <a href="/login/">Already registered?</a>
+            </div>
             <button type="submit" class="btn btn-primary my-3">Register</button>
+            <%- include('includes/messages'); %>
           </form>
         </div>
         <div class="box" id="divSignup">

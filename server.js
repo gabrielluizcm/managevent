@@ -42,7 +42,6 @@ app.use(csrf());
 // Nossos próprios middlewares
 app.use(middlewareGlobal);
 app.use(checkCsrfError);
-app.use(csrfMiddleware);
 app.use(routes);
 
 app.on('pronto', () => {
