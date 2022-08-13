@@ -17,6 +17,23 @@ class Login {
     this.user = null;
   }
 
+  async login() {
+    this.cleanup();
+    if (this.errors.length) return;
+    this.user = await LoginModel.findOne({ email: this.body.email });
+
+    if (!this.user) {
+      this.errors.push('User and password do not match');
+      return;
+    }
+
+    if (!bcryptjs.compareSync(this.body.password, this.user.password)) {
+      this.errors.push('User and password do not match');
+      this.user = null;
+      return;
+    }
+  }
+
   async register() {
     this.validate();
     if (this.errors.length) return;
@@ -24,14 +41,9 @@ class Login {
     await this.userExists();
     if (this.errors.length) return;
 
-    try {
-      const salt = bcryptjs.genSaltSync();
-      this.body.password = bcryptjs.hashSync(this.body.password, salt);
-      this.user = await LoginModel.create(this.body);
-    } catch (err) {
-      this.errors.push(err.message);
-      console.log(err);
-    }
+    const salt = bcryptjs.genSaltSync();
+    this.body.password = bcryptjs.hashSync(this.body.password, salt);
+    this.user = await LoginModel.create(this.body);
   }
 
   validate() {

@@ -1,3 +1,14 @@
+<% if (warnings.length) { %>
+<div class="row">
+  <div class="col my-3">
+    <div class="alert alert-warning text-start">
+      <% warnings.forEach(warning => {%>
+      <%= warning %><br>
+      <% }); %>
+    </div>
+  </div>
+</div>
+<% } %>
 <% if (errors.length) { %>
 <div class="row">
   <div class="col my-3">

@@ -9,7 +9,7 @@
       <h1 class="display-1 text-center">Sign up</h1>
       <p class="text-center lead">Welcome! Let's set you up!</p>
       <main class="container">
-        <div class="box text-center" id="divLogin">
+        <div class="box text-center" id="divSignup">
           <form action="/signup/" method="POST">
             <input type="hidden" name="_csrf" value=<%= csrfToken %>>
             <div class="form-group">
@@ -38,9 +38,6 @@
             <button type="submit" class="btn btn-primary my-3">Register</button>
             <%- include('includes/messages'); %>
           </form>
-        </div>
-        <div class="box" id="divSignup">
-
         </div>
       </main>
     </div>

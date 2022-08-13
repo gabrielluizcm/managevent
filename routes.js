@@ -11,5 +11,6 @@ route.get('/login/', loginController.index);
 route.post('/login/', loginController.signin);
 route.get('/signup/', loginController.signup);
 route.post('/signup/', loginController.register);
+route.get('/logout/', loginController.logout);
 
 module.exports = route;
