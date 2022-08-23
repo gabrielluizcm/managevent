@@ -40,6 +40,12 @@ class Event {
 
     delete this.body._csrf;
   }
+
+  static async find(id) {
+    if (typeof id !== 'string') return;
+    const event = EventModel.findById(id);
+    return event;
+  }
 }
 
 module.exports = Event;

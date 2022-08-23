@@ -1,7 +1,7 @@
 const Event = require('../models/EventModel');
 
 exports.add = (req, res) => {
-  res.render('eventForm');
+  res.render('eventForm', { event: {}});
   return;
 }
 
@@ -22,4 +22,17 @@ exports.create = async (req, res) => {
     console.log(err);
     return res.render('404');
   }
+}
+
+exports.edit = async (req, res) => {
+  if (!req.params.id) return res.render('404');
+
+  const event = await Event.find(req.params.id);
+  if (!event) return res.render('404');
+
+  res.render('eventForm', { event });
+}
+
+exports.patch = async (req, res) => {
+
 }

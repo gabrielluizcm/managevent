@@ -17,5 +17,7 @@ route.get('/logout/', loginController.logout);
 // Events routes
 route.get('/events/create/', eventController.add);
 route.post('/events/create/', eventController.create);
+route.get('/events/edit/:id', eventController.edit);
+route.post('/events/edit/:id', eventController.patch);
 
 module.exports = route;
