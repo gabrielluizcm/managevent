@@ -1,7 +1,7 @@
 const Event = require('../models/EventModel');
 
 exports.add = (req, res) => {
-  res.render('eventForm', { event: {}});
+  res.render('eventForm', { event: {} });
   return;
 }
 
@@ -34,5 +34,21 @@ exports.edit = async (req, res) => {
 }
 
 exports.patch = async (req, res) => {
+  try {
+    if (!req.params.id) return res.render('404');
+    const event = new Event(req.body);
+    await event.edit(req.params.id);
 
+    if (event.errors.length) {
+      req.flash('errors', event.errors);
+      req.session.save(() => res.redirect(`/events/edit/${req.params.id}`));
+      return;
+    }
+
+    req.flash('successes', 'Event edited successfully!');
+    req.session.save(() => res.redirect('/'));
+  } catch (err) {
+    console.log(err);
+    return res.render('404');
+  }
 }

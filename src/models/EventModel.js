@@ -25,6 +25,13 @@ class Event {
     this.event = await EventModel.create(this.body);
   }
 
+  async edit(id) {
+    if (typeof id !== 'string') return;
+    this.validate();
+    if (this.errors.length) return;
+    this.event = await EventModel.findByIdAndUpdate(id, this.body, {new: true});
+  }
+
   validate() {
     this.cleanup();
 
