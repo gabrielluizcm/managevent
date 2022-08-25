@@ -6,7 +6,8 @@ const EventSchema = new mongoose.Schema({
   name: { type: String, required: true },
   dateTime: { type: String, required: true },
   location: { type: String, required: true },
-  description: { type: String }
+  description: { type: String },
+  creatorId: { type: String, required: true }
 });
 
 const EventModel = mongoose.model('Event', EventSchema);
@@ -29,7 +30,7 @@ class Event {
     if (typeof id !== 'string') return;
     this.validate();
     if (this.errors.length) return;
-    this.event = await EventModel.findByIdAndUpdate(id, this.body, {new: true});
+    this.event = await EventModel.findByIdAndUpdate(id, this.body, { new: true });
   }
 
   validate() {

@@ -1,6 +1,7 @@
 const Event = require('../models/EventModel');
 
 exports.add = (req, res) => {
+  if (!req.session.user) return res.render('404');
   res.render('eventForm', { event: {} });
   return;
 }
@@ -25,6 +26,7 @@ exports.create = async (req, res) => {
 }
 
 exports.edit = async (req, res) => {
+  if (!req.session.user) return res.render('404');
   if (!req.params.id) return res.render('404');
 
   const event = await Event.find(req.params.id);
