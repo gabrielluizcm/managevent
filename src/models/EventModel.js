@@ -7,7 +7,8 @@ const EventSchema = new mongoose.Schema({
   dateTime: { type: String, required: true },
   location: { type: String, required: true },
   description: { type: String },
-  creatorId: { type: String, required: true }
+  creatorId: { type: String, required: true },
+  cancelledAt: { type: String },
 });
 
 const EventModel = mongoose.model('Event', EventSchema);
@@ -53,6 +54,15 @@ class Event {
     if (typeof id !== 'string') return;
     const event = EventModel.findById(id);
     return event;
+  }
+
+  static async findMyEvents(creatorId) {
+    var myEvents = EventModel.find({ creatorId: creatorId }).sort({ dateTime: 1 });
+    return myEvents;
+  }
+  static async findEvents(creatorId = false) {
+    var events = EventModel.find({ creatorId: { $ne: creatorId } }).sort({ dateTime: 1 });
+    return events;
   }
 }
 

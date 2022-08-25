@@ -17,14 +17,19 @@
             </a>
           </h4>
           <ul>
-            <li><a href="#">Drink night - Oct. 20 2022</a></li>
+            <% myEvents.forEach(event => { 
+              const date = new Date(event.dateTime);%>
+            <li><a href="/events/edit/<%= event._id %>"><%= event.name + ' - ' + date.toLocaleString()%></a></li>
+            <% }) %>
           </ul>
         </div>
         <div class="box">
           <h4 class="display-4 text-left">Invited events</h4>
           <ul>
-            <li><a href="#">Josi's Birthday - Sep. 23 2022</a></li>
-            <li><a href="#">Nanda's Graduation - Jan. 21 2023</a></li>
+            <% events.forEach(event => { 
+              const date = new Date(event.dateTime);%>
+            <li><a href="#"><%= event.name + ' - ' + date.toLocaleString()%></a></li>
+            <% }) %>
           </ul>
         </div>
       </main>
