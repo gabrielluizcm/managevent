@@ -1,5 +1,6 @@
 <%- include('includes/head'); %>
 <%- include('includes/navbar'); %>
+<link rel="stylesheet" href="/assets/css/index/index.min.css">
 
 <div class="container">
   <div class="row">
@@ -12,14 +13,24 @@
         <div class="box">
           <h4 class="display-4 text-left align-items-center">
             Your events
+            <% if (user) { %>
             <a href="/events/create/" class="text-reset">
               <i class="bi bi-calendar-plus-fill" style="font-size: 1.5rem;"></i>
             </a>
+            <% } %>
           </h4>
           <ul>
             <% myEvents.forEach(event => { 
               const date = new Date(event.dateTime);%>
-            <li><a href="/events/edit/<%= event._id %>"><%= event.name + ' - ' + date.toLocaleString()%></a></li>
+            <li>
+              <%= event.name + ' - ' + date.toLocaleString()%>
+              <a href="/events/edit/<%= event._id %>" class="text-reset">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+              <a href="/events/details/<%= event._id %>" class="text-reset">
+                <i class="bi bi-eye-fill"></i>
+              </a>
+            </li>
             <% }) %>
           </ul>
         </div>
