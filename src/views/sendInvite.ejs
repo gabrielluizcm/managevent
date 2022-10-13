@@ -1,0 +1,48 @@
+<%- include('includes/head'); %>
+<%- include('includes/navbar'); %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 my-3">
+      <h1 class="display-1 text-center">Invite your friends!</h1>
+      <p class="text-center lead">You can send the invitation link via email or copy to message them directly!</p>
+      <main class="container">
+        <div class="box text-center" id="divEmail">
+          <form action="/send/" method="POST">
+            <input type="hidden" name="_csrf" value=<%= csrfToken %>>
+            <div class="form-group">
+              <label>Name
+                <input type="text" class="form-control" name="name" />
+              </label>
+            </div>
+            <div class="form-group">
+              <label>Email
+                <input type="email" class="form-control" name="email" />
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary my-3">Send</button>
+            <%- include('includes/messages'); %>
+          </form>
+          <div class="form-group">
+            <label>This event's invitation link:
+              <input type="text" id="invitationLink" class="form-control" value="<%- inviteBaseUrl %>" readonly>
+            </label>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>
+
+<script>
+  const inputLink = document.querySelector('#invitationLink');
+  inputLink.addEventListener('click', evt => {
+    const link = evt.target.value;
+    navigator.clipboard.writeText(link);
+    alert('Copied!');
+  });
+</script>
+
+<%- include('includes/footer'); %>

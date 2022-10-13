@@ -6,8 +6,20 @@
   <div class="row">
     <div class="col-lg-2"></div>
     <div class="col-lg-8 my-3">
-      <h1 class="display-1 text-center">WIP</h1>
-      <p class="text-center lead">We'll keep you updated on new releases</p>
+      <h1 class="display-1 text-center">
+        <% if (user) { %>
+        Welcome back, <%- user.name %>!
+        <% } else {%>
+        Welcome!
+        <% } %>
+      </h1>
+      <p class="text-center lead">
+        <% if (user) { %>
+        Check your events down below!
+        <% } else {%>
+        Login to check your events!
+        <% } %>
+      </p>
       <main class="container">
         <%- include('includes/messages'); %>
         <div class="box">
@@ -29,6 +41,9 @@
               </a>
               <a href="/events/details/<%= event._id %>" class="text-reset">
                 <i class="bi bi-eye-fill"></i>
+              </a>
+              <a href="/events/send/<%= event._id %>" class="text-reset">
+                <i class="bi bi-send"></i>
               </a>
             </li>
             <% }) %>

@@ -20,5 +20,7 @@ route.post('/events/create/', eventController.create);
 route.get('/events/edit/:id', eventController.edit);
 route.post('/events/edit/:id', eventController.patch);
 route.get('/events/details/:id', eventController.details);
+route.get('/events/send/:id', eventController.send);
+route.post('/events/send/:id', eventController.dispatch);
 
 module.exports = route;

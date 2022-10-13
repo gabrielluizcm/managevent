@@ -64,3 +64,31 @@ exports.details = async (req, res) => {
 
   res.render('eventDetails', { event });
 };
+
+exports.send = async (req, res) => {
+  if (!req.session.user) return res.render('404');
+  if (!req.params.id) return res.render('404');
+
+  const event = await Event.find(req.params.id);
+  if (!event) return res.render('404');
+
+  const inviteBaseUrl = getInviteBaseUrl(req);
+  res.render('sendInvite', { event, inviteBaseUrl });
+}
+
+exports.dispatch = async (req, res) => {
+  try {
+    res.send(req.body);
+  } catch (err) {
+    console.log(err);
+    return res.render('404');
+  }
+};
+
+function getInviteBaseUrl(req) {
+  const protocol = req.protocol;
+  const host = req.hostname;
+  const eventId = req.params.id;
+
+  return `${protocol}://${host}/invitation/${eventId}`;
+}
