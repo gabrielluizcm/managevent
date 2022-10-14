@@ -38,9 +38,9 @@
 
 <script>
   const inputLink = document.querySelector('#invitationLink');
-  inputLink.addEventListener('click', evt => {
+  inputLink.addEventListener('click', async evt => {
     const link = evt.target.value;
-    navigator.clipboard.writeText(link);
+    await navigator.clipboard.writeText(link);
     alert('Copied!');
   });
 </script>
