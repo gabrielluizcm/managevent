@@ -1,4 +1,5 @@
 const Event = require('../models/EventModel');
+const Invite = require('../models/InviteModel');
 
 exports.add = (req, res) => {
   if (!req.session.user) return res.render('404');
@@ -77,8 +78,22 @@ exports.send = async (req, res) => {
 }
 
 exports.dispatch = async (req, res) => {
+  const eventId = req.params.id;
+  if (!eventId) return res.render('404');
+
   try {
-    res.send(req.body);
+    const invite = new Invite(req.body);
+    if (!invite.send()) return res.render('404');
+    await invite.create();
+
+    if (invite.errors.length) {
+      req.flash('errors', invite.errors);
+      req.session.save(() => res.redirect(`/events/send/${eventId}`));
+      return;
+    }
+
+    req.flash('successes', 'Event created successfully!')
+    req.session.save(() => res.redirect('/'));
   } catch (err) {
     console.log(err);
     return res.render('404');
