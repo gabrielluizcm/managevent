@@ -9,7 +9,7 @@
       <p class="text-center lead">You can send the invitation link via email or copy to message them directly!</p>
       <main class="container">
         <div class="box text-center" id="divEmail">
-          <form action="/send/" method="POST">
+          <form action="/events/send/<%= event._id %>" method="POST">
             <input type="hidden" name="_csrf" value=<%= csrfToken %>>
             <div class="form-group">
               <label>Name

@@ -83,17 +83,24 @@ exports.dispatch = async (req, res) => {
 
   try {
     const invite = new Invite(req.body);
-    if (!invite.send()) return res.render('404');
-    await invite.create();
+    invite.setDetails((new Date()).getTime(), 'P', eventId);
 
+    await invite.create()
     if (invite.errors.length) {
       req.flash('errors', invite.errors);
-      req.session.save(() => res.redirect(`/events/send/${eventId}`));
-      return;
+      return req.session.save(() => res.redirect(`/events/send/${eventId}`));
     }
 
-    req.flash('successes', 'Event created successfully!')
-    req.session.save(() => res.redirect('/'));
+    if (!await invite.send()) {
+      req.flash('errors', invite.errors);
+      invite.errors = [];
+      invite.body.status = 'F';
+      await invite.edit(`${invite.invite._id}`);
+      return req.session.save(() => res.redirect(`/events/send/${eventId}`));
+    }
+
+    req.flash('successes', 'Invite sent successfully!')
+    return req.session.save(() => res.redirect(`/events/send/${eventId}`));
   } catch (err) {
     console.log(err);
     return res.render('404');

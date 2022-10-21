@@ -36,6 +36,12 @@ class Invite {
     this.invite = await InviteModel.findByIdAndUpdate(id, this.body, { new: true });
   }
 
+  setDetails(sentAt, status, eventId) {
+    this.body.sentAt = sentAt;
+    this.body.status = status;
+    this.body.eventId = eventId;
+  }
+
   validate() {
     this.cleanup();
 
@@ -55,15 +61,12 @@ class Invite {
     delete this.body._csrf;
   }
 
-  send() {
-    this.validate();
-    if (this.errors.length) return;
-
+  async send() {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: 'dev.gabrielluiz@gmail.com',
-        pass: process.env.GMAILPASSWORD
+        pass: process.env.MAILPASSWORD
       }
     });
     const mailOptions = {
@@ -73,14 +76,11 @@ class Invite {
       text: "You've been invited yadda yadda yadda"
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        this.errors.push(error);
-        return false;
-      }
-      else
-        return true;
-    });
+    return await transporter.sendMail(mailOptions)
+      .then(info => true)
+      .catch(error => {
+        this.errors.push(`Error code ${error.code}`); return false;
+      });
   }
 
   static async find(id) {
