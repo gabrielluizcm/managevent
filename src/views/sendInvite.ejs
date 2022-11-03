@@ -12,13 +12,8 @@
           <form action="/events/send/<%= event._id %>" method="POST">
             <input type="hidden" name="_csrf" value=<%= csrfToken %>>
             <div class="form-group">
-              <label>Name
+              <label>Your friend's name
                 <input type="text" class="form-control" name="name" />
-              </label>
-            </div>
-            <div class="form-group">
-              <label>Your email
-                <input type="email" class="form-control" name="from" />
               </label>
             </div>
             <div class="form-group">

@@ -80,9 +80,12 @@ exports.send = async (req, res) => {
 exports.dispatch = async (req, res) => {
   const eventId = req.params.id;
   if (!eventId) return res.render('404');
+  const event = await Event.find(req.params.id);
+  if (!event) return res.render('404');
 
   try {
     const invite = new Invite(req.body);
+    invite.body.from = req.session.user.email;
     invite.setDetails((new Date()).getTime(), 'P', eventId);
 
     await invite.create()
@@ -91,7 +94,15 @@ exports.dispatch = async (req, res) => {
       return req.session.save(() => res.redirect(`/events/send/${eventId}`));
     }
 
-    if (!await invite.send()) {
+    const params = {
+      eventName: event.name,
+      invitedName: invite.invite.name,
+      userName: req.session.user.name,
+      eventDate: (new Date(event.dateTime)).toLocaleString(),
+      inviteLink: getInviteBaseUrl(req)
+    };
+
+    if (!await invite.send(params)) {
       req.flash('errors', invite.errors);
       invite.errors = [];
       invite.body.status = 'F';
@@ -106,6 +117,9 @@ exports.dispatch = async (req, res) => {
     return res.render('404');
   }
 };
+
+exports.invite = async (req, res) => {
+}
 
 function getInviteBaseUrl(req) {
   const protocol = req.protocol;

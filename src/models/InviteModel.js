@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 
 const InviteSchema = new mongoose.Schema({
   name: { type: String },
-  from: { type: String, required: true },
+  from: { type: String },
   to: { type: String, required: true },
   sentAt: { type: String, required: true },
   acceptedAt: { type: String },
@@ -46,7 +46,6 @@ class Invite {
     this.cleanup();
 
     if (this.body.name < 3 || this.body.name > 20) this.errors.push('Invalid name: must have at least 3 characters and 20 max');
-    if (!validator.isEmail(this.body.from)) this.errors.push('Invalid "from" e-mail');
     if (!validator.isEmail(this.body.to)) this.errors.push('Invalid "to" e-mail');
     if (!this.body.sentAt) this.errors.push('Invalid sent timestamp');
     if (!this.body.status) this.errors.push('Invalid status code');
@@ -61,7 +60,7 @@ class Invite {
     delete this.body._csrf;
   }
 
-  async send() {
+  async send(params) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -72,8 +71,13 @@ class Invite {
     const mailOptions = {
       from: this.body.from,
       to: this.body.to,
-      subject: 'Invitation for event X', //will be dynamic
-      text: "You've been invited yadda yadda yadda"
+      subject: `Invitation for event ${params.eventName}`,
+      html: `<h1>Hello <b>${params.invitedName}</b>!</h1>
+      <h2>Your friend <b>${params.userName}</b> has invited you to the event <b>${params.eventName}</b> on <b>${params.eventDate}</b>.</h2>
+      <p>If you're interested in more details or wish to confirm your presence, please, click the link below to access our website: </p>
+      <p><a href="${params.inviteLink}" target="_blank">${params.eventName} on ManagEvent</a></p>
+      <p>This is an automatic email, please do not respond.</p>
+      <p><a href="http://managevent.com" target="_blank">ManagEvent&#169;</a> by <a href="http://github.com/gabrielluizcm" target="_blank">Gabriel Luiz</a></p>`
     };
 
     return await transporter.sendMail(mailOptions)
