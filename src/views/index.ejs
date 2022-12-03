@@ -21,15 +21,14 @@
         <% } %>
       </p>
       <main class="container">
+        <% if (user) { %>
         <%- include('includes/messages'); %>
         <div class="box">
           <h4 class="display-4 text-left align-items-center">
             Your events
-            <% if (user) { %>
             <a href="/events/create/" class="text-reset">
               <i class="bi bi-calendar-plus-fill" style="font-size: 1.5rem;"></i>
             </a>
-            <% } %>
           </h4>
           <ul>
             <% myEvents.forEach(event => { 
@@ -49,7 +48,7 @@
             <% }) %>
           </ul>
         </div>
-        <div class="box">
+        <!-- <div class="box">
           <h4 class="display-4 text-left">Invited events</h4>
           <ul>
             <% events.forEach(event => { 
@@ -57,7 +56,8 @@
             <li><a href="#"><%= event.name + ' - ' + date.toLocaleString()%></a></li>
             <% }) %>
           </ul>
-        </div>
+        </div> -->
+        <% } %>
       </main>
     </div>
     <div class="col-lg-2"></div>
