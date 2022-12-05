@@ -119,6 +119,38 @@ exports.dispatch = async (req, res) => {
 };
 
 exports.invite = async (req, res) => {
+  if (!req.params.id) return res.render('404');
+
+  const invite = await Invite.find(req.params.id);
+  if (!invite) return res.render('404');
+
+  const event = await Event.find(invite.eventId);
+  event.dateTime = (new Date(event.dateTime)).toLocaleString();
+
+  res.render('invite', { invite, event });
+}
+
+exports.respond = async (req, res) => {
+  const inviteData = await Invite.find(req.params.id);
+  if (!inviteData) return res.render('404');
+  const invite = new Invite(inviteData);
+  invite.body.status = req.body.response;
+
+  try {
+    await invite.edit(req.params.id);
+
+    if (invite.errors.length) {
+      req.flash('errors', invite.errors);
+      req.session.save(() => res.redirect(`/events/invite/${req.params.id}`));
+      return;
+    }
+
+    req.flash('successes', 'Invite responded successfully!');
+    req.session.save(() => res.redirect(`/events/invite/${req.params.id}`));
+  } catch (err) {
+    console.log(err);
+    return res.render('404');
+  }
 }
 
 function getInviteBaseUrl(req) {

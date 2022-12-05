@@ -1,0 +1,50 @@
+<%- include('includes/head'); %>
+<%- include('includes/navbar'); %>
+<link rel="stylesheet" href="/assets/css/eventDetails/eventDetails.min.css">
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 my-3">
+      <h1 class="display-1 text-center">Hello <%= invite.name %>!</h1>
+      <main class="container">
+        <div class="box text-center" id="divLogin">
+          <p>
+            You've been invited to the event <b><%= event.name %></b> that will take place at
+            <b><%= event.location %></b> at
+            <b><%= event.dateTime %></b>
+          </p>
+          <p>
+            Please, choose your response below:
+          </p>
+          <form action="/events/invite/<%= invite._id %>" method="POST">
+            <input type="hidden" name="_csrf" value=<%= csrfToken %>>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="response" id="confirm" value="C" <% if (invite.status == 'C') { %>checked<%}%>>
+                Confirm presence
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="response" id="maybe" value="M" <% if (invite.status == 'M') { %>checked<%}%>>
+                I'm interested
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="response" id="reject" value="R" <% if (invite.status == 'R') { %>checked<%}%>>
+                Won't make it
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary my-3">Respond</button>
+            <%- include('includes/messages'); %> </div>
+          </form>
+        </div>
+      </main>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>
+
+<%- include('includes/footer'); %>
