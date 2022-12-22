@@ -29,14 +29,46 @@
           </div>
           <div class="form-group">
             <label>Confirmed
-              <textarea cols="24" rows="5" class="form-control" readonly>G&#13;J&#13;E
-              </textarea>
+              <% if (sortedInvites.confirmed.length) { %>
+              <textarea cols="24" rows="5" class="form-control"
+                readonly><% sortedInvites.confirmed.forEach(invite => { %><%= `${invite.name}\n` %><% }) %></textarea>
+              <% } else { %>
+              <p>No confirmations yet :(</p>
+              <% } %>
             </label>
           </div>
-          <label>Pending
-            <textarea cols="24" rows="5" class="form-control" readonly>L&#13;H
-            </textarea>
-          </label>
+          <div class="form-group">
+            <label>Interested, but not confirmed
+              <% if (sortedInvites.maybe.length) { %>
+              <textarea cols="24" rows="5" class="form-control"
+                readonly><% sortedInvites.maybe.forEach(invite => { %><%= `${invite.name}\n` %><% }) %></textarea>
+              <% } else { %>
+              <p>No "maybes" at the moment</p>
+              <% } %>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Pending
+              <% if (sortedInvites.pending.length) { %>
+              <textarea cols="24" rows="5" class="form-control"
+                readonly><% sortedInvites.pending.forEach(invite => { %><%= `${invite.name}\n` %><% }) %></textarea>
+              <% } else { %>
+              <p>No pending invites, <a href="/events/send/<%= event._id %>" target="_blank">wanna invite more
+                  people?</a>
+              </p>
+              <% } %>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Not coming
+              <% if (sortedInvites.rejected.length) { %>
+              <textarea cols="24" rows="5" class="form-control"
+                readonly><% sortedInvites.rejected.forEach(invite => { %><%= `${invite.name}\n` %><% }) %></textarea>
+              <% } else { %>
+              <p>No rejections :)</p>
+              <% } %>
+            </label>
+          </div>
         </div>
       </main>
     </div>

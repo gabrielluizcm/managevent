@@ -63,7 +63,10 @@ exports.details = async (req, res) => {
   const event = await Event.find(req.params.id);
   if (!event) return res.render('404');
 
-  res.render('eventDetails', { event });
+  const invites = await Invite.findByEvent(event._id);
+  const sortedInvites = sortInvites(invites);
+
+  res.render('eventDetails', { event, sortedInvites });
 };
 
 exports.send = async (req, res) => {
@@ -159,4 +162,31 @@ function getInviteBaseUrl(req) {
   const eventId = req.params.id;
 
   return `${protocol}://${host}/invitation/${eventId}`;
+}
+
+function sortInvites(invites) {
+  const sortedInvites = {
+    confirmed: [],
+    maybe: [],
+    rejected: [],
+    pending: [],
+  };
+
+  invites.forEach(invite => {
+    switch (invite.status) {
+      case 'C':
+        sortedInvites.confirmed.push(invite);
+        break;
+      case 'M':
+        sortedInvites.maybe.push(invite);
+        break;
+      case 'R':
+        sortedInvites.rejected.push(invite);
+        break;
+      default:
+        sortedInvites.pending.push(invite);
+    }
+  });
+
+  return sortedInvites;
 }

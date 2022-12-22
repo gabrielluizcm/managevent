@@ -1,5 +1,10 @@
 label {
   width: 100%;
+  font-weight: bold;
+
+  &>* {
+    font-weight: initial;
+  }
 
   &>input {
     text-align: center;
